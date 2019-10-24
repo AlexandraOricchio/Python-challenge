@@ -39,10 +39,10 @@ with open(datapath, 'r', newline="") as datafile:
     candidate_index=candidate_counts.index(max(candidate_counts))
     winner=candidate_list[candidate_index]
    
-    print(candidate_list)
-    print(candidate_counts)
-    print(most_counts)
-    print(winner)
+    # print(candidate_list)
+    # print(candidate_counts)
+    # print(most_counts)
+    # print(winner)
     
     print("Election Results")
     print("--------------------")
@@ -55,3 +55,17 @@ with open(datapath, 'r', newline="") as datafile:
     print("--------------------")
     print(f"Winner: {winner}")
     print("--------------------")
+
+output_path=os.path.join("..","PyPoll","PyPoll_Results.txt")
+with open(output_path, 'w', newline="") as resultfile:
+    resultfile.write("Election Results\n")
+    resultfile.write("--------------------\n")
+    resultfile.write(f"Total Votes: {vote_count}\n")
+    resultfile.write("--------------------\n")
+    resultfile.write(f"{candidate_list[0]}: {percent0} ({count0})\n")
+    resultfile.write(f"{candidate_list[1]}: {percent1} ({count1})\n")
+    resultfile.write(f"{candidate_list[2]}: {percent2} ({count2})\n")
+    resultfile.write(f"{candidate_list[3]}: {percent3} ({count3})\n")
+    resultfile.write("--------------------\n")
+    resultfile.write(f"Winner: {winner}\n")
+    resultfile.write("--------------------\n")
