@@ -9,63 +9,53 @@ with open(datapath, 'r', newline="") as datafile:
     # print(datareader)
     # print(dataheader)
 
+    #count total votes made in this data set
+    #create list of candidates column from data set
     vote_count=0
-    candidate_list=[]
-    count0=0
-    count1=0
-    count2=0
-    count3=0
-
+    data_candidate_list=[]
     for row in datareader:
-        vote_count=vote_count+1
-        if row[2] not in candidate_list:
-            candidate_list.append(row[2])
-        elif row[2] == candidate_list[0]:
-            count0=count0+1
-        elif row[2]== candidate_list[1]:
-            count1=count1+1
-        elif row[2]==candidate_list[2]:
-            count2=count2+1
-        elif row[2]==candidate_list[3]:
-            count3=count3+1
-    
-    percent0="{:.3%}".format(count0/vote_count)
-    percent1="{:.3%}".format(count1/vote_count)
-    percent2="{:.3%}".format(count2/vote_count)
-    percent3="{:.3%}".format(count3/vote_count)
-    
-    candidate_counts=[count0, count1, count2,count3]
-    most_counts=max(candidate_counts)
-    candidate_index=candidate_counts.index(max(candidate_counts))
-    winner=candidate_list[candidate_index]
-   
-    # print(candidate_list)
-    # print(candidate_counts)
-    # print(most_counts)
+        vote_count=vote_count+1 
+        cand=row[2]
+        data_candidate_list.append(cand)   
+
+    #create a list of lists to identify unique candidates, their vote count and percentage of votes overall
+    results_list=[[x,"{:.3%}".format(int(data_candidate_list.count(x))/vote_count),data_candidate_list.count(x)] for x in set(data_candidate_list)]
+    # print(results_list)
+
+    #create list of vote counts per candidate
+    candidate_votes_list=[]
+    for i in range(len(results_list)):
+        candidate_votes = results_list[i][2]
+        candidate_votes_list.append(candidate_votes)
+    # print(candidate_votes_list)
+
+    #identify largest value of vote counts and use indices to identify which candidate's results list match 
+    max_votes=max(candidate_votes_list)
+    max_index=candidate_votes_list.index(max(candidate_votes_list))
+    winner=results_list[max_index]
+    # print(max_votes)
+    # print(max_index)
     # print(winner)
-    
+   
     print("Election Results")
-    print("--------------------")
+    print("-" * 35)
     print(f"Total Votes: {vote_count}")
-    print("--------------------")
-    print(f"{candidate_list[0]}: {percent0} ({count0})")
-    print(f"{candidate_list[1]}: {percent1} ({count1})")
-    print(f"{candidate_list[2]}: {percent2} ({count2})")
-    print(f"{candidate_list[3]}: {percent3} ({count3})")
-    print("--------------------")
-    print(f"Winner: {winner}")
-    print("--------------------")
+    print("-" * 35)
+    for i in range(len(results_list)):
+            print(f"{results_list[i][0]}: {results_list[i][1]} ({results_list[i][2]})")
+    print("-" * 35)
+    print(f"Winner: {winner[0]}")
+    print("-" * 35)
 
 output_path=os.path.join("..","PyPoll","PyPoll_Results.txt")
 with open(output_path, 'w', newline="") as resultfile:
     resultfile.write("Election Results\n")
-    resultfile.write("--------------------\n")
+    resultfile.write("-" * 35 + "\n")
     resultfile.write(f"Total Votes: {vote_count}\n")
-    resultfile.write("--------------------\n")
-    resultfile.write(f"{candidate_list[0]}: {percent0} ({count0})\n")
-    resultfile.write(f"{candidate_list[1]}: {percent1} ({count1})\n")
-    resultfile.write(f"{candidate_list[2]}: {percent2} ({count2})\n")
-    resultfile.write(f"{candidate_list[3]}: {percent3} ({count3})\n")
-    resultfile.write("--------------------\n")
-    resultfile.write(f"Winner: {winner}\n")
-    resultfile.write("--------------------\n")
+    resultfile.write("-" * 35 + "\n")
+    for i in range(len(results_list)):
+            resultfile.write(f"{results_list[i][0]}: {results_list[i][1]} ({results_list[i][2]})\n")
+    resultfile.write("-" * 35 + "\n")
+    resultfile.write(f"Winner: {winner[0]}\n")
+    resultfile.write("-" * 35 + "\n")
+
