@@ -20,6 +20,7 @@ with open(datapath, 'r', newline="") as datafile:
 
     #create a list of lists to identify unique candidates, their vote count and percentage of votes overall
     results_list=[[x,"{:.3%}".format(int(data_candidate_list.count(x))/vote_count),data_candidate_list.count(x)] for x in set(data_candidate_list)]
+    results_list= sorted(results_list, key=lambda x:x[2], reverse=True)
     # print(results_list)
 
     #create list of vote counts per candidate
